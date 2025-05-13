@@ -1,0 +1,19 @@
+{
+    "flights": [
+        {
+            "actualLandingTime": "2017-05-11T00:01:31.000+02:00",
+            "actualOffBlockTime": null,
+            "aircraftRegistration": "PHHXI",
+            "aircraftType": {
+                "iatamain": "73H",
+                "iatasub": "73H"
+            },
+            "airlineCode": 164,
+            "baggageClaim": {
+                "belts": [
+                    "2"
+                ]
+            },
+            "checkinAllocations": null,
+            "codeshares": null,
+ ...
