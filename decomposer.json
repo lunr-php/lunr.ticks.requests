@@ -8,5 +8,22 @@
             "search-path": "/src/Lunr/Halo/"
         },
         "development-only": true
+    },
+    "Lunr.Ticks": {
+        "url": "https://github.com/lunr-php/lunr.ticks.git",
+        "version": "0.12.0",
+        "revision": "master",
+        "psr4": {
+            "prefix": "Lunr\\Ticks",
+            "search-path": "/src/Lunr/Ticks/"
+        }
+    },
+    "Mockery": {
+        "url": "https://github.com/mockery/mockery.git",
+        "version": "1.6.12",
+        "psr0": {
+            "path": "/library/"
+        },
+        "development-only": true
     }
 }
