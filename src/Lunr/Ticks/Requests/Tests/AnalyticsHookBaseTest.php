@@ -9,6 +9,8 @@
 
 namespace Lunr\Ticks\Requests\Tests;
 
+use Lunr\Ticks\AnalyticsDetailLevel;
+
 /**
  * This class contains tests for the AnalyticsHook class.
  *
@@ -31,6 +33,30 @@ class AnalyticsHookBaseTest extends AnalyticsHookTestCase
     public function testTracingControllerPassed(): void
     {
         $this->assertPropertySame('tracingController', $this->controller);
+    }
+
+    /**
+     * Test that events is initialized as empty array.
+     */
+    public function testEventsIsEmptyArray(): void
+    {
+        $this->assertPropertySame('events', []);
+    }
+
+    /**
+     * Test that the current profiling level is set correctly.
+     */
+    public function testCurrentProfilingLevel(): void
+    {
+        $this->assertPropertySame('level', AnalyticsDetailLevel::Info);
+    }
+
+    /**
+     * Test that startTimestamps is initialized as empty array.
+     */
+    public function testStartTimestampsIsEmptyArray(): void
+    {
+        $this->assertPropertySame('startTimestamps', []);
     }
 
 }

@@ -1,0 +1,52 @@
+{
+    "flights": [
+        {
+            "actualLandingTime": "2017-05-11T00:01:31.000+02:00",
+            "actualOffBlockTime": null,
+            "aircraftRegistration": "PHHXI",
+            "aircraftType": {
+                "iatamain": "73H",
+                "iatasub": "73H"
+            },
+            "airlineCode": 164,
+            "baggageClaim": {
+                "belts": [
+                    "2"
+                ]
+            },
+            "checkinAllocations": null,
+            "codeshares": null,
+            "estimatedLandingTime": "2017-05-11T00:01:31.000+02:00",
+            "expectedTimeBoarding": null,
+            "expectedTimeGateClosing": null,
+            "expectedTimeGateOpen": null,
+            "expectedTimeOnBelt": "2017-05-11T00:34:48.000+02:00",
+            "flightDirection": "A",
+            "flightName": "HV5586",
+            "flightNumber": 5586,
+            "gate": "C11",
+            "id": 121756588986016004,
+            "mainFlight": "HV5586",
+            "prefixIATA": "HV",
+            "prefixICAO": "TRA",
+            "publicEstimatedOffBlockTime": null,
+            "publicFlightState": {
+                "flightStates": [
+                    "ARR"
+                ]
+            },
+            "route": {
+                "destinations": [
+                    "NCE"
+                ]
+            },
+            "scheduleDate": "2017-05-11",
+            "scheduleTime": "00:10:00",
+            "schemaVersion": "3",
+            "serviceType": "J",
+            "terminal": 1,
+            "transferPositions": null
+        }
+    ],
+    "schemaVersion": "3"
+}

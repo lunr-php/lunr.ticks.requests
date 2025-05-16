@@ -19,6 +19,8 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use WpOrg\Requests\Response;
+use WpOrg\Requests\Response\Headers;
 
 /**
  * This class contains common setup routines, providers
@@ -50,6 +52,18 @@ abstract class AnalyticsHookTestCase extends LunrBaseTestCase
     protected EventInterface&MockObject $event;
 
     /**
+     * Mock Instance of the Response class.
+     * @var Response&MockObject
+     */
+    protected Response&MockObject $response;
+
+    /**
+     * Mock Instance of the Headers class.
+     * @var Headers&MockObject
+     */
+    protected Headers&MockObject $headers;
+
+    /**
      * Instance of the tested class.
      * @var AnalyticsHook
      */
@@ -71,6 +85,16 @@ abstract class AnalyticsHookTestCase extends LunrBaseTestCase
                                 TracingInfoInterface::class,
                             );
 
+        $this->response = $this->getMockBuilder(Response::class)
+                               ->disableOriginalConstructor()
+                               ->getMock();
+
+        $this->headers = $this->getMockBuilder(Headers::class)
+                              ->disableOriginalConstructor()
+                              ->getMock();
+
+        $this->response->headers = $this->headers;
+
         $this->class = new AnalyticsHook($this->eventLogger, $this->controller);
 
         parent::baseSetUp($this->class);
@@ -85,6 +109,8 @@ abstract class AnalyticsHookTestCase extends LunrBaseTestCase
         unset($this->eventLogger);
         unset($this->event);
         unset($this->controller);
+        unset($this->response);
+        unset($this->headers);
 
         parent::tearDown();
     }
