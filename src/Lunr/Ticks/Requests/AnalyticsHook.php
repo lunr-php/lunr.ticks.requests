@@ -9,11 +9,14 @@
 
 namespace Lunr\Ticks\Requests;
 
+use CurlHandle;
 use Lunr\Ticks\AnalyticsDetailLevel;
 use Lunr\Ticks\EventLogging\EventInterface;
 use Lunr\Ticks\EventLogging\EventLoggerInterface;
 use Lunr\Ticks\TracingControllerInterface;
 use Lunr\Ticks\TracingInfoInterface;
+use WpOrg\Requests\Exception as RequestsException;
+use WpOrg\Requests\Exception\Transport\Curl as CurlException;
 use WpOrg\Requests\Response;
 
 /**
@@ -90,6 +93,17 @@ class AnalyticsHook
      * @var array<string|int,float>
      */
     private array $startTimestamps;
+
+    /**
+     * Set of error types that indicate a curl error.
+     * @var string[]
+     */
+    private array $curlErrorTypes = [
+        'curlerror',
+        CurlException::EASY,
+        CurlException::MULTI,
+        CurlException::SHARE,
+    ];
 
     /**
      * Constructor.
@@ -238,6 +252,105 @@ class AnalyticsHook
         ];
 
         $this->events[$id]->addFields($fields);
+    }
+
+    /**
+     * Alter/Inspect the exception before it is returned to the user.
+     *
+     * @param RequestsException              $exception Transport or response parsing exception
+     * @param string                         $url       URL for the request
+     * @param array<string, string>          $headers   HTTP Headers
+     * @param array<array-key, mixed>|string $data      POST data or GET params
+     * @param string                         $type      HTTP verb
+     * @param array<string, mixed>           $options   Options for the request
+     * @param string|int                     $id        Id of the request
+     *
+     * @return void
+     */
+    public function failed(
+        RequestsException &$exception,
+        string $url,
+        array $headers,
+        array|string $data,
+        string $type,
+        array $options,
+        string|int $id = 0
+    ): void
+    {
+        $fields = [
+            'responseBody' => $exception->getMessage(),
+        ];
+
+        $status              = NULL;
+        $presetExecutionTime = NULL;
+        $presetFields        = $this->events[$id]->getFields();
+
+        if (array_key_exists('executionTime', $presetFields))
+        {
+            $presetExecutionTime = (float) $presetFields['executionTime'];
+        }
+
+        if (in_array($exception->getType(), $this->curlErrorTypes) && $exception->getData() instanceof CurlHandle)
+        {
+            $info  = curl_getinfo($exception->getData());
+            $errno = curl_errno($exception->getData());
+
+            if ($info === FALSE)
+            {
+                $info = [];
+            }
+
+            if (isset($info['total_time']))
+            {
+                $fields['executionTime'] = $info['total_time'];
+                $fields['endTimestamp']  = (float) bcadd((string) $this->startTimestamps[$id], (string) $fields['executionTime'], 4);
+            }
+            elseif ($presetExecutionTime === NULL)
+            {
+                $fields['executionTime'] = (float) bcsub((string) microtime(TRUE), (string) $this->startTimestamps[$id], 4);
+                $fields['endTimestamp']  = (float) bcadd((string) $this->startTimestamps[$id], (string) $fields['executionTime'], 4);
+            }
+            else
+            {
+                $fields['endTimestamp'] = (float) bcadd((string) $this->startTimestamps[$id], (string) $presetExecutionTime, 4);
+            }
+
+            $fields = [
+                'ip'                => $info['primary_ip'] ?? NULL,
+                'startTimestamp'    => $this->startTimestamps[$id],
+                'nameLookupTime'    => $info['namelookup_time'] ?? NULL,
+                'connectTime'       => $info['connect_time'] ?? NULL,
+                'preTransferTime'   => $info['pretransfer_time'] ?? NULL,
+                'startTransferTime' => $info['starttransfer_time'] ?? NULL,
+                'sizeDownload'      => $info['size_download'] ?? NULL,
+            ] + $fields;
+
+            // Map some curl error codes to cloudflare HTTP response codes
+            $status = match ($errno) {
+                // Web Server Is Down
+                CURLE_COULDNT_CONNECT      => '521',
+                // Connection Timed Out
+                CURLE_OPERATION_TIMEDOUT   => '522',
+                // SSL Handshake Failed
+                CURLE_SSL_CONNECT_ERROR    => '525',
+                // Invalid SSL Certificate
+                CURLE_SSL_PEER_CERTIFICATE => '526',
+                // Web Server Returned an Unknown Error
+                CURLE_RECV_ERROR           => '520',
+                CURLE_PARTIAL_FILE         => '520',
+                default                    => NULL,
+            };
+        }
+        elseif ($presetExecutionTime === NULL)
+        {
+            $fields['executionTime'] = (float) bcsub((string) microtime(TRUE), (string) $this->startTimestamps[$id], 4);
+        }
+
+        $tags = [
+            'status' => $status,
+        ];
+
+        $this->record($fields, $tags, $id);
     }
 
     /**

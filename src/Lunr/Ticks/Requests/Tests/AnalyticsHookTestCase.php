@@ -19,6 +19,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use WpOrg\Requests\Exception as RequestsException;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Response\Headers;
 
@@ -64,6 +65,12 @@ abstract class AnalyticsHookTestCase extends LunrBaseTestCase
     protected Headers&MockObject $headers;
 
     /**
+     * Mock Instance of the RequestsException class.
+     * @var RequestsException
+     */
+    protected RequestsException $exception;
+
+    /**
      * Instance of the tested class.
      * @var AnalyticsHook
      */
@@ -89,6 +96,8 @@ abstract class AnalyticsHookTestCase extends LunrBaseTestCase
                                ->disableOriginalConstructor()
                                ->getMock();
 
+        $this->exception = new RequestsException('cURL error 28: Connection timed out after 10001 milliseconds', 'curlerror');
+
         $this->headers = $this->getMockBuilder(Headers::class)
                               ->disableOriginalConstructor()
                               ->getMock();
@@ -111,6 +120,7 @@ abstract class AnalyticsHookTestCase extends LunrBaseTestCase
         unset($this->controller);
         unset($this->response);
         unset($this->headers);
+        unset($this->exception);
 
         parent::tearDown();
     }
