@@ -9,6 +9,7 @@
 
 namespace Lunr\Ticks\Requests;
 
+use ArrayAccess;
 use CurlHandle;
 use Lunr\Ticks\AnalyticsDetailLevel;
 use Lunr\Ticks\EventLogging\EventInterface;
@@ -79,6 +80,12 @@ class AnalyticsHook
     private AnalyticsDetailLevel $level;
 
     /**
+     * Default profiling level
+     * @var AnalyticsDetailLevel
+     */
+    private AnalyticsDetailLevel $defaultLevel;
+
+    /**
      * Analytics events
      * @var array<string|int,EventInterface>
      */
@@ -93,6 +100,18 @@ class AnalyticsHook
      * @var array<string|int,float>
      */
     private array $startTimestamps;
+
+    /**
+     * Set of domains with custom level definitions
+     * @var array<string, AnalyticsDetailLevel>|ArrayAccess<string, AnalyticsDetailLevel>
+     */
+    private array|ArrayAccess $domainFilter;
+
+    /**
+     * Set of regex based url filters with custom level definition
+     * @var iterable<string, AnalyticsDetailLevel>
+     */
+    private iterable $urlFilter;
 
     /**
      * Set of error types that indicate a curl error.
@@ -122,6 +141,10 @@ class AnalyticsHook
 
         $this->events = [];
         $this->level  = AnalyticsDetailLevel::Info;
+
+        $this->defaultLevel = $this->level;
+        $this->domainFilter = [];
+        $this->urlFilter    = [];
     }
 
     /**
@@ -132,6 +155,33 @@ class AnalyticsHook
         unset($this->events);
         unset($this->startTimestamps);
         unset($this->level);
+        unset($this->defaultLevel);
+        unset($this->domainFilter);
+        unset($this->urlFilter);
+    }
+
+    /**
+     * Set list of domains with custom level definitions.
+     *
+     * @param array<string, AnalyticsDetailLevel>|ArrayAccess<string, AnalyticsDetailLevel> $filter Set of domains with custom level definitions
+     *
+     * @return void
+     */
+    public function setDomainFilter(array|ArrayAccess $filter): void
+    {
+        $this->domainFilter = $filter;
+    }
+
+    /**
+     * Set list of regex based url filters with custom level definitions.
+     *
+     * @param iterable<string, AnalyticsDetailLevel> $filter Set of regex based url filters with custom level definitions
+     *
+     * @return void
+     */
+    public function setUrlFilter(iterable $filter): void
+    {
+        $this->urlFilter = $filter;
     }
 
     /**
@@ -155,6 +205,53 @@ class AnalyticsHook
     }
 
     /**
+     * Temporarily override the current level based on filters.
+     *
+     * @param string      $url    URL of the current request
+     * @param string|null $domain Domain of the current request
+     *
+     * @return void
+     */
+    private function updateAnalyticsLevel(string $url, ?string $domain = NULL): void
+    {
+        $highestLevel = AnalyticsDetailLevel::Info;
+
+        $urlFilterUsed = FALSE;
+
+        foreach ($this->urlFilter as $regex => $urlLevel)
+        {
+            if (!preg_match($regex, $url))
+            {
+                continue;
+            }
+
+            $highestLevel = $highestLevel->value > $urlLevel->value ? $highestLevel : $urlLevel;
+
+            if ($highestLevel === AnalyticsDetailLevel::Full)
+            {
+                $this->level = $highestLevel;
+                return;
+            }
+
+            $urlFilterUsed = TRUE;
+        }
+
+        if ($urlFilterUsed)
+        {
+            $this->level = $highestLevel;
+            return;
+        }
+
+        if ($domain !== NULL && isset($this->domainFilter[$domain]) && $this->domainFilter[$domain] instanceof AnalyticsDetailLevel)
+        {
+            $this->level = $this->domainFilter[$domain];
+            return;
+        }
+
+        $this->level = $this->defaultLevel;
+    }
+
+    /**
      * Alter the request before it is sent to the transport.
      *
      * @param string                         $url     URL for the request
@@ -175,9 +272,21 @@ class AnalyticsHook
         ];
 
         $tags = [
-            'type'   => $type,
-            'domain' => parse_url($url, PHP_URL_HOST),
+            'type' => $type,
         ];
+
+        $domain = parse_url($url, PHP_URL_HOST);
+
+        if (is_string($domain))
+        {
+            $tags['domain'] = $domain;
+
+            $this->updateAnalyticsLevel($url, $tags['domain']);
+        }
+        else
+        {
+            $this->updateAnalyticsLevel($url);
+        }
 
         if ($this->level->atLeast(AnalyticsDetailLevel::Detailed))
         {
