@@ -114,6 +114,12 @@ class AnalyticsHook
     private iterable $urlFilter;
 
     /**
+     * Whether it's a Requests::request_multiple() or Requests::request() call.
+     * @var bool
+     */
+    private bool $isRequestMultiple;
+
+    /**
      * Set of error types that indicate a curl error.
      * @var string[]
      */
@@ -138,6 +144,7 @@ class AnalyticsHook
         $this->eventLogger       = $eventLogger;
         $this->tracingController = $tracingController;
         $this->startTimestamps   = [];
+        $this->isRequestMultiple = FALSE;
 
         $this->events = [];
         $this->level  = AnalyticsDetailLevel::Info;
@@ -158,6 +165,7 @@ class AnalyticsHook
         unset($this->defaultLevel);
         unset($this->domainFilter);
         unset($this->urlFilter);
+        unset($this->isRequestMultiple);
     }
 
     /**
@@ -215,6 +223,13 @@ class AnalyticsHook
 
         unset($this->events[$id]);
         unset($this->startTimestamps[$id]);
+
+        if ($this->events !== [])
+        {
+            return;
+        }
+
+        $this->isRequestMultiple = FALSE;
     }
 
     /**
@@ -278,6 +293,12 @@ class AnalyticsHook
      */
     public function beforeRequest(string &$url, array &$headers, array|string &$data, string &$type, array &$options, $id = NULL): void
     {
+        // If $id is not NULL the $id param is passed and we can say its called from Requests::request_multiple()
+        if ($id !== NULL && $this->isRequestMultiple === FALSE)
+        {
+            $this->isRequestMultiple = TRUE;
+        }
+
         $id ??= 0;
 
         $fields = [
@@ -539,6 +560,14 @@ class AnalyticsHook
      */
     public function afterRequest(Response &$return, array &$headers, array|string &$data, array &$options, string|int|null $id = NULL): void
     {
+        // Ignore when called from Requests::request_multiple() and the $id param is not passed.
+        // For Requests::requests_multiple() we don't want this called directly, but rather call
+        // it from multiple_request_complete() instead ourselves (where we do pass an ID).
+        if ($id === NULL && $this->isRequestMultiple === TRUE)
+        {
+            return;
+        }
+
         $fields = [];
         $id   ??= 0;
 
@@ -576,6 +605,29 @@ class AnalyticsHook
         ];
 
         $this->record($fields, $tags, $id);
+    }
+
+    /**
+     * Alter the response for an individual request in a multi-request.
+     *
+     * @param Response|RequestsException $response Response of the request
+     * @param string|int                 $id       Id of the request
+     *
+     * @return void
+     */
+    public function multipleRequestComplete(Response|RequestsException &$response, string|int $id): void
+    {
+        $headers = [];
+        $data    = [];
+        $options = [];
+
+        if ($response instanceof RequestsException)
+        {
+            $this->failed($response, '', $headers, '', '', $options, $id);
+            return;
+        }
+
+        $this->afterRequest($response, $headers, $data, $options, $id);
     }
 
 }

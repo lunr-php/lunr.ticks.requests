@@ -22,7 +22,45 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
 {
 
     /**
-     * Test that beforeRequest() sets the start_timestamp.
+     * Test that beforeRequest() sets isRequestMultiple to TRUE.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::beforeRequest
+     */
+    public function testBeforeRequestSetsIsMultiRequestTrue(): void
+    {
+        $url     = 'https://www.example.com/api/v1/webservice';
+        $headers = [
+            'Authentication' => 'Bearer Foo',
+        ];
+        $data    = [
+            'language' => 'en',
+        ];
+        $type    = 'GET';
+        $options = [
+            'timeout' => 60,
+        ];
+
+        $this->mockFunction('microtime', function () { return 1622536730.791435; });
+
+        $this->eventLogger->expects($this->once())
+                          ->method('newEvent')
+                          ->with('outbound_requests_log')
+                          ->willReturn($this->event);
+
+        $this->controller->shouldReceive('getSpanSpecifictags')
+                         ->once()
+                         ->andReturn([ 'call' => 'controller/method' ]);
+
+        $this->class->beforeRequest($url, $headers, $data, $type, $options, 0);
+
+        $this->assertPropertySame('startTimestamps', [ 1622536730.791435 ]);
+        $this->assertPropertySame('isRequestMultiple', TRUE);
+
+        $this->unmockFunction('microtime');
+    }
+
+    /**
+     * Test that beforeRequest() sets the startTimestamp.
      *
      * @covers \Lunr\Ticks\Requests\AnalyticsHook::beforeRequest
      */

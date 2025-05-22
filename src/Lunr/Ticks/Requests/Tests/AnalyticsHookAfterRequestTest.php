@@ -20,6 +20,34 @@ class AnalyticsHookAfterRequestTest extends AnalyticsHookTestCase
 {
 
     /**
+     * Test that afterRequest() returns when id is NULL and isRequestMultiple is TRUE.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::afterRequest
+     */
+    public function testAfterRequestReturnsOnDuplicateMultiRequestsHookCall(): void
+    {
+        $this->mockFunction('microtime', function () { return 1622536731.781455; });
+
+        $this->setReflectionPropertyValue('startTimestamps', [ 'test_endpoint' => 1622536730.791435 ]);
+        $this->setReflectionPropertyValue('events', [ 'test_endpoint' => $this->event ]);
+        $this->setReflectionPropertyValue('isRequestMultiple', TRUE);
+
+        $headers = [];
+        $data    = [];
+        $options = [];
+
+        $this->event->expects($this->never())
+                    ->method('record');
+
+        $this->class->afterRequest($this->response, $headers, $data, $options);
+
+        $this->assertPropertySame('startTimestamps', [ 'test_endpoint' => 1622536730.791435 ]);
+        $this->assertPropertySame('events', [ 'test_endpoint' => $this->event ]);
+
+        $this->unmockFunction('microtime');
+    }
+
+    /**
      * Test that afterRequest() resets profiling data.
      *
      * @covers \Lunr\Ticks\Requests\AnalyticsHook::afterRequest
