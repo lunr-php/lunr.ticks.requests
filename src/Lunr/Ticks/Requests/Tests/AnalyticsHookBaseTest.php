@@ -62,6 +62,19 @@ class AnalyticsHookBaseTest extends AnalyticsHookTestCase
     }
 
     /**
+     * Test that setAnalyticsDetailLevel() overrides the default analytics detail level.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::setAnalyticsDetailLevel
+     */
+    public function testSettingAnalyticsDetailLevel(): void
+    {
+        $this->class->setAnalyticsDetailLevel(AnalyticsDetailLevel::Detailed);
+
+        $this->assertPropertySame('level', AnalyticsDetailLevel::Detailed);
+        $this->assertPropertySame('defaultLevel', AnalyticsDetailLevel::Detailed);
+    }
+
+    /**
      * Test that setDomainFilter() sets custom domain filters.
      *
      * @covers Lunr\Ticks\Requests\AnalyticsHook::setDomainFilter

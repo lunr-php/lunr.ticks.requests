@@ -161,6 +161,19 @@ class AnalyticsHook
     }
 
     /**
+     * Set analytics detail level.
+     *
+     * @param AnalyticsDetailLevel $level Profiling level
+     *
+     * @return void
+     */
+    public function setAnalyticsDetailLevel(AnalyticsDetailLevel $level): void
+    {
+        $this->level        = $level;
+        $this->defaultLevel = $level;
+    }
+
+    /**
      * Set list of domains with custom level definitions.
      *
      * @param array<string, AnalyticsDetailLevel>|ArrayAccess<string, AnalyticsDetailLevel> $filter Set of domains with custom level definitions
