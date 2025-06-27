@@ -354,6 +354,57 @@ class AnalyticsHook
     }
 
     /**
+     * Alter the redirect information before redirecting.
+     *
+     * @param string                         $location URL the request is redirected to
+     * @param array<string, string>          $headers  HTTP Headers
+     * @param array<array-key, mixed>|string $data     POST data or GET params
+     * @param array<string, mixed>           $options  Options for the request
+     * @param Response                       $return   Response object
+     *
+     * @return void
+     */
+    public function beforeRedirect(string &$location, array &$headers, array|string &$data, array &$options, Response $return): void
+    {
+        $fields = [];
+
+        if (!isset($this->events[0]->getFields()['executionTime']))
+        {
+            $fields['executionTime'] = (float) bcsub((string) microtime(TRUE), (string) $this->startTimestamps[0], 4);
+        }
+
+        if ($this->level->atLeast(AnalyticsDetailLevel::Detailed))
+        {
+            $responseHeaders = $return->headers->getAll();
+
+            $fields['responseHeaders'] = empty($responseHeaders) ? NULL : json_encode($responseHeaders);
+        }
+
+        if ($this->level === AnalyticsDetailLevel::Detailed)
+        {
+            if (strlen($return->body) > 512)
+            {
+                $fields['responseBody'] = substr($return->body, 0, 512) . '...';
+            }
+            else
+            {
+                $fields['responseBody'] = $return->body;
+            }
+        }
+        elseif ($this->level === AnalyticsDetailLevel::Full)
+        {
+            $fields['responseBody'] = $return->body;
+        }
+
+        $tags = [
+            // phpcs:ignore Lunr.NamingConventions.CamelCapsVariableName
+            'status' => is_int($return->status_code) ? (string) $return->status_code : NULL,
+        ];
+
+        $this->record($fields, $tags);
+    }
+
+    /**
      * Alter the response object before it is returned to the user.
      *
      * @param Response                       $return  Response object
