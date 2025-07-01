@@ -10,6 +10,8 @@
 namespace Lunr\Ticks\Requests\Tests;
 
 use Lunr\Ticks\AnalyticsDetailLevel;
+use Lunr\Ticks\Requests\Tests\Helpers\MockArrayAccess;
+use Lunr\Ticks\Requests\Tests\Helpers\MockIterator;
 
 /**
  * This class contains tests for the AnalyticsHook class.
@@ -57,6 +59,74 @@ class AnalyticsHookBaseTest extends AnalyticsHookTestCase
     public function testStartTimestampsIsEmptyArray(): void
     {
         $this->assertPropertySame('startTimestamps', []);
+    }
+
+    /**
+     * Test that setDomainFilter() sets custom domain filters.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::setDomainFilter
+     */
+    public function testSettingDomainFilter(): void
+    {
+        $filter = [
+            'www.example.com' => AnalyticsDetailLevel::Full,
+        ];
+
+        $this->class->setDomainFilter($filter);
+
+        $this->assertPropertySame('domainFilter', $filter);
+    }
+
+    /**
+     * Test that setDomainFilter() sets custom domain filters.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::setDomainFilter
+     */
+    public function testSettingArrayAccessDomainFilter(): void
+    {
+        $filter = [
+            'www.example.com' => AnalyticsDetailLevel::Full,
+        ];
+
+        $arrayAccess = new MockArrayAccess($filter);
+
+        $this->class->setDomainFilter($arrayAccess);
+
+        $this->assertPropertySame('domainFilter', $arrayAccess);
+    }
+
+    /**
+     * Test that setUrlFilter() sets custom regex based url filters.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::setUrlFilter
+     */
+    public function testSettingUrlFilter(): void
+    {
+        $filter = [
+            '/example/i' => AnalyticsDetailLevel::Full,
+        ];
+
+        $this->class->setUrlFilter($filter);
+
+        $this->assertPropertySame('urlFilter', $filter);
+    }
+
+    /**
+     * Test that setUrlFilter() sets custom regex based url filters.
+     *
+     * @covers Lunr\Ticks\Requests\AnalyticsHook::setUrlFilter
+     */
+    public function testSettingIterableUrlFilter(): void
+    {
+        $filter = [
+            '/example/i' => AnalyticsDetailLevel::Full,
+        ];
+
+        $iterable = new MockIterator($filter);
+
+        $this->class->setUrlFilter($iterable);
+
+        $this->assertPropertySame('urlFilter', $iterable);
     }
 
 }
