@@ -16,6 +16,7 @@ use Lunr\Ticks\EventLogging\EventInterface;
 use Lunr\Ticks\EventLogging\EventLoggerInterface;
 use Lunr\Ticks\TracingControllerInterface;
 use Lunr\Ticks\TracingInfoInterface;
+use RuntimeException;
 use WpOrg\Requests\Exception as RequestsException;
 use WpOrg\Requests\Exception\Transport\Curl as CurlException;
 use WpOrg\Requests\Response;
@@ -217,6 +218,35 @@ class AnalyticsHook
     private function record(array $fields, array $tags, string|int $id = 0): void
     {
         $this->events[$id]->recordTimestamp();
+
+        $this->events[$id]->setTraceId($this->tracingController->getTraceId() ?? throw new RuntimeException('Trace ID not available!'));
+
+        if ($this->isRequestMultiple === TRUE)
+        {
+            // Every curl call should end up with a dedicated span ID. Ideally that would be the ID of the
+            // request we get from Requests, but devs are responsible for setting them themselves. So just
+            // to be sure check whether we have a UUID here and if not, generate a new span ID.
+            if ($this->tracingController->isValidSpanId((string) $id))
+            {
+                $this->events[$id]->setSpanId((string) $id);
+            }
+            else
+            {
+                $this->events[$id]->setSpanId($this->tracingController->getNewSpanId());
+            }
+        }
+        else
+        {
+            $this->events[$id]->setSpanId($this->tracingController->getSpanId() ?? throw new RuntimeException('Span ID not available!'));
+        }
+
+        $parentSpanID = $this->tracingController->getParentSpanId();
+
+        if ($parentSpanID != NULL)
+        {
+            $this->events[$id]->setParentSpanId($parentSpanID);
+        }
+
         $this->events[$id]->addTags($tags);
         $this->events[$id]->addFields($fields);
         $this->events[$id]->record();
@@ -224,9 +254,21 @@ class AnalyticsHook
         unset($this->events[$id]);
         unset($this->startTimestamps[$id]);
 
+        if ($this->isRequestMultiple === FALSE)
+        {
+            // Return to the parent scope for requests()
+            $this->tracingController->stopChildSpan();
+        }
+
         if ($this->events !== [])
         {
             return;
+        }
+
+        if ($this->isRequestMultiple === TRUE)
+        {
+            // All multi requests are handled now so we can return to the parent scope for requests_multiple() as well
+            $this->tracingController->stopChildSpan();
         }
 
         $this->isRequestMultiple = FALSE;
@@ -298,6 +340,10 @@ class AnalyticsHook
         {
             $this->isRequestMultiple = TRUE;
         }
+
+        // Both requests() and requests_multiple() are supposed to land here. We start a new span either way,
+        // but requests_multiple() needs more special handling later on
+        $this->tracingController->startChildSpan();
 
         $id ??= 0;
 

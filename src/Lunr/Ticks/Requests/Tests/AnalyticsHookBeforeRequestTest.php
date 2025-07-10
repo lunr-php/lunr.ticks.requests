@@ -47,6 +47,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -85,6 +88,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -119,6 +125,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -166,6 +175,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -219,6 +231,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -271,6 +286,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -322,6 +340,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -377,6 +398,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -429,6 +453,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -480,6 +507,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -534,6 +564,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -593,6 +626,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -657,6 +693,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -717,6 +756,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -780,6 +822,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -837,6 +882,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -900,6 +948,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -967,6 +1018,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -1033,6 +1087,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -1095,6 +1152,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -1156,6 +1216,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -1216,6 +1279,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
@@ -1283,6 +1349,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
 
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
+
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()
                          ->andReturn([ 'call' => 'controller/method' ]);
@@ -1348,6 +1417,9 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
                           ->method('newEvent')
                           ->with('outbound_requests_log')
                           ->willReturn($this->event);
+
+        $this->controller->shouldReceive('startChildSpan')
+                         ->once();
 
         $this->controller->shouldReceive('getSpanSpecifictags')
                          ->once()

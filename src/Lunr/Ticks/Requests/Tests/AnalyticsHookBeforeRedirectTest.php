@@ -42,6 +42,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
 
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
+
         $this->class->beforeRedirect($url, $headers, $data, $options, $this->response);
 
         $this->assertPropertySame('startTimestamps', []);
@@ -72,6 +87,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
 
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
+
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
 
         $this->response->status_code = 404;
 
@@ -119,6 +149,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
 
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
+
         $this->response->status_code = FALSE;
 
         $tags = [
@@ -162,6 +207,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
 
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
+
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
 
         $this->response->status_code = 404;
 
@@ -207,6 +267,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
         $this->setReflectionPropertyValue('level', AnalyticsDetailLevel::Detailed);
+
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
 
         $this->response->status_code = 404;
         $this->response->body        = 'language=en';
@@ -257,6 +332,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
         $this->setReflectionPropertyValue('level', AnalyticsDetailLevel::Detailed);
+
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
 
         $this->response->status_code = 404;
         $this->response->body        = '{"language":"en"}';
@@ -316,6 +406,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('events', [ $this->event ]);
         $this->setReflectionPropertyValue('level', AnalyticsDetailLevel::Detailed);
 
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
+
         $this->response->status_code = 404;
         $this->response->body        = file_get_contents(TEST_STATICS . '/data.json');
 
@@ -366,6 +471,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('events', [ $this->event ]);
         $this->setReflectionPropertyValue('level', AnalyticsDetailLevel::Full);
 
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
+
         $this->response->status_code = 404;
         $this->response->body        = 'language=en';
 
@@ -415,6 +535,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
         $this->setReflectionPropertyValue('level', AnalyticsDetailLevel::Full);
+
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
 
         $this->response->status_code = 404;
         $this->response->body        = '{"language":"en"}';
@@ -473,6 +608,21 @@ class AnalyticsHookBeforeRedirectTest extends AnalyticsHookTestCase
         $this->setReflectionPropertyValue('startTimestamps', [ 1622536730.791435 ]);
         $this->setReflectionPropertyValue('events', [ $this->event ]);
         $this->setReflectionPropertyValue('level', AnalyticsDetailLevel::Full);
+
+        $this->controller->shouldReceive('getTraceId')
+                         ->once()
+                         ->andReturns('7b333e15-aa78-4957-a402-731aecbb358e');
+
+        $this->controller->shouldReceive('getSpanId')
+                         ->once()
+                         ->andReturns('24ec5f90-7458-4dd5-bb51-7a1e8f4baafe');
+
+        $this->controller->shouldReceive('getParentSpanId')
+                         ->once()
+                         ->andReturns('8b1f87b5-8383-4413-a341-7619cd4b9948');
+
+        $this->controller->shouldReceive('stopChildSpan')
+                         ->once();
 
         $this->response->status_code = 404;
         $this->response->body        = file_get_contents(TEST_STATICS . '/data.json');
