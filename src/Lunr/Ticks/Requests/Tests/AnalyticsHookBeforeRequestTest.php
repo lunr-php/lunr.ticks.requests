@@ -196,7 +196,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => NULL,
-            'data'           => 'language=en',
+            'requestBody'    => 'language=en',
             'options'        => '{"timeout":60}',
         ];
 
@@ -251,7 +251,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => 'language=en',
+            'requestBody'    => 'language=en',
             'options'        => '{"timeout":60}',
         ];
 
@@ -306,7 +306,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => file_get_contents(TEST_STATICS . '/data_short.json'),
+            'requestBody'    => file_get_contents(TEST_STATICS . '/data_short.json'),
             'options'        => '{"timeout":60}',
         ];
 
@@ -361,7 +361,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => NULL,
+            'requestBody'    => NULL,
             'options'        => '{"timeout":60}',
         ];
 
@@ -418,7 +418,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -473,7 +473,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => file_get_contents(TEST_STATICS . '/data.json'),
+            'requestBody'    => file_get_contents(TEST_STATICS . '/data.json'),
             'options'        => '{"timeout":60}',
         ];
 
@@ -528,7 +528,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => NULL,
+            'requestBody'    => NULL,
             'options'        => '{"timeout":60}',
         ];
 
@@ -585,7 +585,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -647,7 +647,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -713,7 +713,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -903,7 +903,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -969,7 +969,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -1038,7 +1038,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -1107,7 +1107,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -1172,7 +1172,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -1236,7 +1236,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -1300,7 +1300,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 
@@ -1369,7 +1369,7 @@ class AnalyticsHookBeforeRequestTest extends AnalyticsHookTestCase
         $fields = [
             'url'            => $url,
             'requestHeaders' => '{"Authentication":"Bearer Foo"}',
-            'data'           => '{"language":"en"}',
+            'requestBody'    => '{"language":"en"}',
             'options'        => '{"timeout":60}',
         ];
 

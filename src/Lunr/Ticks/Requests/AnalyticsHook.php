@@ -380,27 +380,27 @@ class AnalyticsHook
             {
                 if (strlen($data) > 512)
                 {
-                    $fields['data'] = substr($data, 0, 512) . '...';
+                    $fields['requestBody'] = substr($data, 0, 512) . '...';
                 }
                 else
                 {
-                    $fields['data'] = $data;
+                    $fields['requestBody'] = $data;
                 }
             }
             else
             {
-                $fields['data'] = empty($data) ? NULL : json_encode($data);
+                $fields['requestBody'] = empty($data) ? NULL : json_encode($data);
             }
         }
         elseif ($this->level === AnalyticsDetailLevel::Full)
         {
             if (is_array($data))
             {
-                $fields['data'] = empty($data) ? NULL : json_encode($data);
+                $fields['requestBody'] = empty($data) ? NULL : json_encode($data);
             }
             else
             {
-                $fields['data'] = $data;
+                $fields['requestBody'] = $data;
             }
         }
 
