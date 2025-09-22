@@ -3,6 +3,7 @@
 
 parameters:
     level: 10
+    treatPhpDocTypesAsCertain: false
     paths:
         - ../src
     bootstrapFiles:
