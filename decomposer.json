@@ -1,7 +1,8 @@
 {
     "Lunr.Halo": {
         "url": "https://github.com/lunr-php/lunr.halo.git",
-        "version": "0.11.0",
+        "version": "0.12.0",
+        "revision": "master",
         "psr4": {
             "prefix": "Lunr\\Halo",
             "search-path": "/src/Lunr/Halo/"
@@ -10,7 +11,8 @@
     },
     "Lunr.Ticks": {
         "url": "https://github.com/lunr-php/lunr.ticks.git",
-        "version": "0.12.0",
+        "version": "0.13.0",
+        "revision": "master",
         "psr4": {
             "prefix": "Lunr\\Ticks",
             "search-path": "/src/Lunr/Ticks/"
@@ -27,7 +29,7 @@
     "Requests": {
         "url": "https://github.com/framna-nl-backend/Requests.git",
         "version": "2.0.11.90",
-        "revision": "527562bc751a9b4a185a79fb61e04acfb5144dd8",
+        "revision": "release/2.0.x",
         "psr4": {
             "prefix": "WpOrg\\Requests",
             "search-path": "/src/"
