@@ -28,7 +28,7 @@
     },
     "Requests": {
         "url": "https://github.com/framna-nl-backend/Requests.git",
-        "version": "2.0.11.90",
+        "version": "2.0.15.90",
         "revision": "release/2.0.x",
         "psr4": {
             "prefix": "WpOrg\\Requests",
